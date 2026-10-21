@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ยินดีด้วยคุณกิต!</title>
+<style>
+:root{--bg:#fff7e0;--fg:#2b1d00;--card:#ffffff;--accent:#e8344e;--box-padding-top:env(safe-area-inset-top,0px);color-scheme:light dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1530;--fg:#fff3d6;--card:#2a2048;--accent:#ff5c75}}
+:root[data-theme="dark"]{--bg:#1c1530;--fg:#fff3d6;--card:#2a2048;--accent:#ff5c75}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--fg);font-family:"Noto Sans Thai",system-ui,sans-serif;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card{background:var(--card);border-radius:24px;padding:28px 20px;width:min(92vw,420px);height:min(78vh,520px);text-align:center;box-shadow:0 10px 40px rgba(0,0,0,.2);position:relative}
+h1{font-size:1.6rem;margin:.2em 0}
+.big{font-size:4rem}
+p{margin:.4em 0}
+.timer{color:var(--accent);font-weight:700;font-size:1.2rem}
+#btn{position:absolute;left:50%;bottom:36px;transform:translateX(-50%);background:var(--accent);color:#fff;border:0;border-radius:999px;padding:16px 32px;font-size:1.2rem;font-weight:700;cursor:pointer;font-family:inherit}
+#msg{font-size:.9rem;opacity:.8;min-height:1.4em}
+#end{display:none}
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <div id="main">
+    <div class="big">🎁</div>
+    <h1>ยินดีด้วยคุณกิต!</h1>
+    <p>คุณเป็นผู้โชคดีคนที่ 1,000,000 ของเว็บนี้</p>
+    <p>รางวัล: <b>iPhone รุ่นใหม่ล่าสุด 1 เครื่อง</b></p>
+    <p class="timer">หมดเขตใน <span id="t">00:59</span></p>
+    <p id="msg">กดปุ่มด้านล่างเพื่อรับรางวัล</p>
+    <button id="btn">รับรางวัลเลย!</button>
+  </div>
+  <div id="end">
+    <div class="big">🤣</div>
+    <h1>โดนหลอกแล้วกิต!!</h1>
+    <p>ไม่มี iPhone ไม่มีรางวัล<br>มีแต่เพื่อนที่รักแกล้งนาย 555</p>
+    <p style="font-size:3rem">🎉🎊🥳</p>
+  </div>
+</div>
+<script>
+var tries=0,need=8,btn=document.getElementById('btn'),card=document.getElementById('card');
+var lines=["เกือบแล้ว!","ช้าไปนิด 😜","ปุ่มมันเขินนะ","อีกนิดเดียว!","สู้ๆ กิต!","จับให้ได้สิ","ใกล้แล้ว!"];
+function dodge(e){
+  if(tries>=need)return;
+  if(e&&e.preventDefault)e.preventDefault();
+  tries++;
+  var w=card.clientWidth-btn.offsetWidth-20,h=card.clientHeight-btn.offsetHeight-20;
+  btn.style.transform='none';
+  btn.style.left=(10+Math.random()*w)+'px';
+  btn.style.top=(10+Math.random()*h)+'px';
+  btn.style.bottom='auto';
+  document.getElementById('msg').textContent=lines[tries%lines.length]+' ('+tries+'/'+need+')';
+}
+btn.addEventListener('pointerenter',dodge);
+btn.addEventListener('touchstart',dodge,{passive:false});
+btn.addEventListener('click',function(e){
+  if(tries<need){dodge(e);return;}
+  document.getElementById('main').style.display='none';
+  document.getElementById('end').style.display='block';
+});
+var s=59;setInterval(function(){s=s>0?s-1:59;document.getElementById('t').textContent='00:'+String(s).padStart(2,'0');},1000);
+</script>
+</body>
+</html>
